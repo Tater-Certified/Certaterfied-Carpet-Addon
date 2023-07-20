@@ -15,4 +15,9 @@ public class Rules {
             strict = false
     )
     public static boolean cursedOptimizedRandom;
+    @Rule(
+            categories = {RuleCategory.OPTIMIZATION, "certaterfied"},
+            strict = false
+    )
+    public static boolean optimizedPortalCollisions;
 }

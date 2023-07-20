@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "CarpetAddonRegistery",
+    "optimizations.collisions.NetherPortalMixin",
     "optimizations.random.EntityMixin",
     "optimizations.random.MathHelperMixin",
     "optimizations.random.SpawnHelperMixin"
