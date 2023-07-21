@@ -15,6 +15,12 @@ public class Rules {
             strict = false
     )
     public static boolean cursedOptimizedRandom;
+
+    @Rule(
+            categories = {RuleCategory.OPTIMIZATION, "nvidia", "certaterfied"},
+            strict = false
+    )
+    public static boolean optimizedRandomCUDA;
     @Rule(
             categories = {RuleCategory.OPTIMIZATION, "certaterfied"},
             strict = false
