@@ -81,17 +81,17 @@ dependencies {
     modImplementation "carpet:fabric-carpet:${project.carpet_core_version}"
 
     // JCuda Java libraries
-    implementation(group: 'org.jcuda', name: 'jcuda', version: jCuda_version) {
+    modImplementation(group: 'org.jcuda', name: 'jcuda', version: jCuda_version) {
         transitive = false
     }
-    implementation(group: 'org.jcuda', name: 'jcurand', version: jCuda_version) {
+    modImplementation(group: 'org.jcuda', name: 'jcurand', version: jCuda_version) {
         transitive = false
     }
     def classifier = getOsString() + "-" + getArchString()
-    modImplementation group: 'org.jcuda', name: 'jcurand-natives',
-            classifier: classifier, version: jCuda_version
-    modImplementation group: 'org.jcuda', name: 'jcuda-natives',
-            classifier: classifier, version: jCuda_version
+    modImplementation include(group: 'org.jcuda', name: 'jcurand-natives',
+            classifier: classifier, version: jCuda_version)
+    modImplementation include( group: 'org.jcuda', name: 'jcuda-natives',
+            classifier: classifier, version: jCuda_version)
     }
 
 processResources {

@@ -2,8 +2,10 @@ package com.github.tatercertified.certaterfiedcarpetaddon;
 
 import carpet.CarpetExtension;
 import carpet.CarpetServer;
+import com.github.tatercertified.certaterfiedcarpetaddon.utils.JCurand;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.random.Xoroshiro128PlusPlusRandom;
 import org.apache.commons.io.IOUtils;
@@ -26,6 +28,10 @@ public class CertaterfiedCarpetAddon implements CarpetExtension {
     @Override
     public void onGameStarted() {
         CarpetServer.settingsManager.parseSettingsClass(Rules.class);
+        if (Rules.optimizedRandomCUDA) {
+            JCurand.initialize();
+            ServerLifecycleEvents.SERVER_STOPPING.register(server -> JCurand.shutdown());
+        }
     }
 
     @Override
