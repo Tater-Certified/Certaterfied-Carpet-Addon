@@ -2,7 +2,7 @@ package com.github.tatercertified.certaterfiedcarpetaddon.mixin.optimizations.ra
 
 import com.github.tatercertified.certaterfiedcarpetaddon.CertaterfiedCarpetAddon;
 import com.github.tatercertified.certaterfiedcarpetaddon.Rules;
-import com.github.tatercertified.certaterfiedcarpetaddon.utils.JCurand;
+import com.github.tatercertified.certaterfiedcarpetaddon.utils.CUDARandom;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +27,7 @@ public class MathHelperMixin {
             }
             cir.setReturnValue(mean + (float) CertaterfiedCarpetAddon.fastRandom.nextGaussian() * deviation);
         } else if (Rules.optimizedRandomCUDA) {
-            cir.setReturnValue((float) (JCurand.nextGaussian() * deviation));
+            cir.setReturnValue((float) (CUDARandom.nextGaussian() * deviation));
         }
     }
 
@@ -36,7 +36,7 @@ public class MathHelperMixin {
         if (Rules.optimizedRandom) {
             cir.setReturnValue(CertaterfiedCarpetAddon.fastRandom.nextBetween(min, max));
         } else if (Rules.optimizedRandomCUDA) {
-            cir.setReturnValue(JCurand.nextInt(min, max));
+            cir.setReturnValue(CUDARandom.nextInt(min, max));
         }
     }
 
@@ -45,7 +45,7 @@ public class MathHelperMixin {
         if (Rules.optimizedRandom) {
             cir.setReturnValue(CertaterfiedCarpetAddon.fastRandom.nextFloat() * (max - min) + min);
         } else if (Rules.optimizedRandomCUDA) {
-            cir.setReturnValue(JCurand.nextFloat(min, max));
+            cir.setReturnValue(CUDARandom.nextFloat(min, max));
         }
     }
 
@@ -55,10 +55,11 @@ public class MathHelperMixin {
             long m = CertaterfiedCarpetAddon.fastRandom.nextLong() & 0xFFFFFFFFFFFF0FFFL | 0x4000L;
             long l = CertaterfiedCarpetAddon.fastRandom.nextLong() & 0x3FFFFFFFFFFFFFFFL | Long.MIN_VALUE;
             cir.setReturnValue(new UUID(l, m));
-        } else if (Rules.optimizedRandomCUDA) {
-            long m = JCurand.nextLong() & 0xFFFFFFFFFFFF0FFFL | 0x4000L;
-            long l = JCurand.nextLong() & 0x3FFFFFFFFFFFFFFFL | Long.MIN_VALUE;
-            cir.setReturnValue(new UUID(l, m));
+            // TODO Fixes CUDA longs
+       // } else if (Rules.optimizedRandomCUDA) {
+       //     long m = CUDARandom.nextLong() & 0xFFFFFFFFFFFF0FFFL | 0x4000L;
+       //     long l = CUDARandom.nextLong() & 0x3FFFFFFFFFFFFFFFL | Long.MIN_VALUE;
+       //     cir.setReturnValue(new UUID(l, m));
         }
     }
 
@@ -73,7 +74,7 @@ public class MathHelperMixin {
             }
             cir.setReturnValue(CertaterfiedCarpetAddon.fastRandom.nextBetween(min, max));
         } else if (Rules.optimizedRandomCUDA) {
-            cir.setReturnValue(JCurand.nextInt(min, max));
+            cir.setReturnValue(CUDARandom.nextInt(min, max));
         }
     }
 
@@ -88,7 +89,7 @@ public class MathHelperMixin {
             }
             cir.setReturnValue(CertaterfiedCarpetAddon.fastRandom.nextFloat() * (max - min) + min);
         } else if (Rules.optimizedRandomCUDA) {
-            cir.setReturnValue(JCurand.nextFloat(min, max));
+            cir.setReturnValue(CUDARandom.nextFloat(min, max));
         }
     }
 
@@ -103,7 +104,7 @@ public class MathHelperMixin {
             }
             cir.setReturnValue(CertaterfiedCarpetAddon.fastRandom.nextDouble() * (max - min) + min);
         } else if (Rules.optimizedRandomCUDA) {
-            cir.setReturnValue(JCurand.nextDouble(min, max));
+            cir.setReturnValue(CUDARandom.nextDouble(min, max));
         }
     }
 }

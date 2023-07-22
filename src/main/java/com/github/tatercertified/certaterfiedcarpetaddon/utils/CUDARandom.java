@@ -1,23 +1,23 @@
 package com.github.tatercertified.certaterfiedcarpetaddon.utils;
 
+import jcuda.CudaException;
 import jcuda.Pointer;
 import jcuda.Sizeof;
+import jcuda.jcurand.JCurand;
 import jcuda.jcurand.curandGenerator;
+import jcuda.runtime.JCuda;
+
 import static jcuda.jcurand.JCurand.*;
 import static jcuda.jcurand.curandRngType.CURAND_RNG_PSEUDO_DEFAULT;
-import static jcuda.runtime.JCuda.cudaFree;
-import static jcuda.runtime.JCuda.cudaMemcpy;
-import static jcuda.runtime.JCuda.cudaMalloc;
+import static jcuda.runtime.JCuda.*;
 import static jcuda.runtime.cudaMemcpyKind.cudaMemcpyDeviceToHost;
 
-public class JCurand {
+public class CUDARandom {
     private static final int N = 64;
-    private static final int MEMORY_CLEAR_INTERVAL = 100000; // Clear memory every 100000 random number generations
 
     private static curandGenerator cudaRNG;
     private static Pointer deviceData;
     private static float[] hostData;
-    private static long randomNumberCount = 0;
 
     // Bit-twiddling constants
     static final long EVEN_CHUNKS = 0x7c1f07c1f07c1fL;
@@ -27,13 +27,16 @@ public class JCurand {
      * Start RNG
      */
     public static void initialize() {
+        // Enable exceptions and omit all subsequent error checks
+        JCuda.setExceptionsEnabled(true);
+        JCurand.setExceptionsEnabled(true);
         hostData = new float[N];
         deviceData = new Pointer();
-        cudaMalloc(deviceData, N * Sizeof.FLOAT);
-
         cudaRNG = new curandGenerator();
+        cudaMalloc(deviceData, N * Sizeof.FLOAT);
         curandCreateGenerator(cudaRNG, CURAND_RNG_PSEUDO_DEFAULT);
         curandSetPseudoRandomGeneratorSeed(cudaRNG, 0L);
+        System.out.println("CUDA Initialized");
     }
 
     /**
@@ -142,29 +145,21 @@ public class JCurand {
     private static void generateRandomNumbers() {
         curandGenerateUniform(cudaRNG, deviceData, N);
         cudaMemcpy(Pointer.to(hostData), deviceData, N * Sizeof.FLOAT, cudaMemcpyDeviceToHost);
-
-        randomNumberCount++;
-
-        // Check if it's time to clear memory
-        if (randomNumberCount % MEMORY_CLEAR_INTERVAL == 0) {
-            clearMemory();
-        }
     }
 
     private static void generateRandomLongs() {
-        curandGenerateLongLong(cudaRNG, deviceData, N);
-        cudaMemcpy(Pointer.to(hostData), deviceData, N * Sizeof.LONG, cudaMemcpyDeviceToHost);
-
-        randomNumberCount++;
-
-        // Check if it's time to clear memory
-        if (randomNumberCount % MEMORY_CLEAR_INTERVAL == 0) {
-            clearMemory();
+        try {
+            curandGenerateLongLong(cudaRNG, deviceData, N);
+        } catch (CudaException e) {
+            e.printStackTrace();
         }
+
+        cudaMemcpy(Pointer.to(hostData), deviceData, N * Sizeof.LONG, cudaMemcpyDeviceToHost);
     }
 
-    private static void clearMemory() {
-        cudaFree(deviceData);
-        cudaMalloc(deviceData, N * Sizeof.FLOAT);
+    private static void generateRandomNormals(float mean, float deviation) {
+        curandGenerateNormal(cudaRNG, deviceData, N, mean, deviation);
+
+        cudaMemcpy(Pointer.to(hostData), deviceData, N * Sizeof.LONG, cudaMemcpyDeviceToHost);
     }
 }

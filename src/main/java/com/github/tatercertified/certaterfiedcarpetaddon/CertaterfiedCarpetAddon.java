@@ -2,7 +2,7 @@ package com.github.tatercertified.certaterfiedcarpetaddon;
 
 import carpet.CarpetExtension;
 import carpet.CarpetServer;
-import com.github.tatercertified.certaterfiedcarpetaddon.utils.JCurand;
+import com.github.tatercertified.certaterfiedcarpetaddon.utils.CUDARandom;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -28,9 +28,11 @@ public class CertaterfiedCarpetAddon implements CarpetExtension {
     @Override
     public void onGameStarted() {
         CarpetServer.settingsManager.parseSettingsClass(Rules.class);
+        System.out.println("CUDA: " + Rules.optimizedRandomCUDA);
+        // TODO Fix this check
         if (Rules.optimizedRandomCUDA) {
-            JCurand.initialize();
-            ServerLifecycleEvents.SERVER_STOPPING.register(server -> JCurand.shutdown());
+        CUDARandom.initialize();
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> CUDARandom.shutdown());
         }
     }
 
