@@ -1,6 +1,6 @@
 {
   "carpet.rule.optimizedRandom.desc": "Replaces Math.Random with a more optimized Random implementation. It seems to still be true to vanilla",
-  "carpet.rule.cursedOptimizedRandom.desc": "Replaces some logic with Random that MAY BREAK STUFF!!!",
+  "carpet.rule.cursedOptimizedRandom.desc": "Replaces some logic with Random that MAY BREAK STUFF!!! **Requires optimizedRandom enabled",
   "carpet.rule.optimizedPortalCollisions.desc": "Removes checking bounding box sizes of large mobs. It significantly reduces lag on portal-based farms",
-  "carpet.rule.optimizedRandomCUDA.desc": "Replaces Math.Random with a CUDA-accelerated alternative. Restart required! For Nvidia GPUs only!"
+  "carpet.rule.optimizedRandomCUDA.desc": "Replaces Math.Random with a CUDA-accelerated alternative. Restart required! For Nvidia GPUs only! **Requires optimizedRandom enabled"
 }
