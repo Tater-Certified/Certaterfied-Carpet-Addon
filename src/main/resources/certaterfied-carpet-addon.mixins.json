@@ -5,10 +5,14 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "CarpetAddonRegistery",
+    "cursed.fastmath.MathHelperBreakerMixin",
+    "cursed.fastmath.Vec3DMixin",
+    "cursed.spawning.SpawnHelperCursed",
     "optimizations.collisions.NetherPortalMixin",
     "optimizations.random.EntityMixin",
     "optimizations.random.MathHelperMixin",
-    "optimizations.random.SpawnHelperMixin"
+    "optimizations.random.SpawnHelperMixin",
+    "optimizations.ticking.EntityTickingMixin"
   ],
   "client": [
   ],

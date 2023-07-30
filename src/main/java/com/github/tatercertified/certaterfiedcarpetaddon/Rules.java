@@ -4,6 +4,7 @@ import carpet.api.settings.Rule;
 import carpet.api.settings.RuleCategory;
 
 public class Rules {
+    // Optimizations
     @Rule(
             categories = {RuleCategory.OPTIMIZATION, "certaterfied"},
             strict = false
@@ -26,4 +27,21 @@ public class Rules {
             strict = false
     )
     public static boolean optimizedPortalCollisions;
+    @Rule(
+            categories = {RuleCategory.OPTIMIZATION, "certaterfied"},
+            strict = false
+    )
+    public static boolean optimizedEntityTicking;
+
+    // Cursed
+    @Rule(
+            categories = {"cursed", "certaterfied"},
+            strict = false
+    )
+    public static boolean cursedLagFreeSpawning;
+    @Rule(
+            categories = {"cursed, certaterfied"},
+            strict = false
+    )
+    public static boolean cursedFastMath;
 }
